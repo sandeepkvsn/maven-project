@@ -13,7 +13,7 @@ pipeline {
                 post{
                     success{
                         echo "Artificats to be created"
-                        archive '**/*.war'
+                        archiveArtifacts  '**/*.war'
                         echo "Junit test cases"
                         junit '**/target/surefire-reports/*.xml'
                         echo "checkstyle reports"
@@ -24,12 +24,18 @@ pipeline {
             stage ("Deploy-Dev"){
                 steps {
                     echo "This is development deployment stage"
+                    build 'deploy-dev'
                 }
             }
             stage ("Deploy-Prod"){
                 steps {
                     echo "This is Production deployment stage"
+                    timeout(time: 60, unit: 'SECONDS') {
+                        input 'Do you want to deploy in production'
+}
+                build 'test'
+}
                 }
-            }
+            
     }
 }
