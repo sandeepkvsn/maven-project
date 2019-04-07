@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+    tools{
+        jdk 'java8'
+        maven'maven3'
+    }
+        stages{
+            stage ("Build"){
+                steps {
+                    echo "This is build stage"
+                    sh label: '', script: 'mvn package checkstyle:checkstyle'
+                }
+                post{
+                    success{
+                        echo "Artificats to be created"
+                        archive '**/*.war'
+                        echo "Junit test cases"
+                        junit '**/target/surefire-reports/*.xml'
+                        echo "checkstyle reports"
+                        checkstyle canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '', unHealthy: ''
+                    }
+                }
+            }
+            stage ("Deploy-Dev"){
+                steps {
+                    echo "This is development deployment stage"
+                    build 'deploy-dev'
+                }
+            }
+            stage ("Deploy-Prod"){
+                steps {
+                    echo "This is Production deployment stage"
+                    timeout(time: 60, unit: 'SECONDS') {
+                        input 'Do you want to deploy in production'
+    // some block
+}
+                build 'test'
+}
+                }
+            }
+    }
+}
