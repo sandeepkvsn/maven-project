@@ -24,7 +24,7 @@ pipeline {
             stage ("Deploy-Dev"){
                 steps {
                     echo "This is development deployment stage"
-                    build 'deploy-dev'
+                    build 'deploy_dev'
                 }
             }
             stage ("Deploy-Prod"){
